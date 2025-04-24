@@ -1,69 +1,88 @@
 class Node{
-    constructor(data){
+    constructor(data)
+    {
         this.data = data;
         this.next = null;
     }
 }
 
+
 class SinglyLinkedList{
-    
-    constructor(){
+    constructor()
+    {
         this.head = null;
-        this.tail = null;
-        this.length = 0;
+        this.size = 0;
     }
     
-    push(data){
+    append(data)
+    {
         const newNode = new Node(data);
-        if(this.length === 0){
-            this.head = newNode;
-            this.tail = newNode;
-        }else{
-            this.tail.next = newNode;
-            this.tail = newNode;
-        }
-        this.length++;
         
+        if(this.head == null)
+        {
+            this.head = newNode;
+            this.size++;
+            return;
+        }
+        
+        let current = this.head;
+        while(current.next)
+        {
+            current = current.next;
+        }
+        current.next = newNode;
+        this.size++;
+
+    }
+    
+    prepend(data)
+    {
+        const newNode = new Node(data);
+        
+        if(this.head == null)
+        {
+            this.head = newNode;
+            this.size++;
+            return;
+        }
+        
+        newNode.next = this.head;
+        this.head = newNode;
+        this.size++;
         return;
     }
     
-    pop(){
-        if(this.length === 0) return undefined;
+    insert(index, data)
+    {
+        const newNode = new Node(data);
         let current = this.head;
-        let newTail = current;
-        while(current.next){
-            newTail = current;
+        let previous = null;
+        
+        let count = 0;
+        while(count < index)
+        {
+            previous = current;
             current = current.next;
+            count++;
         }
-        this.tail = newTail;
-        this.tail.next = null;
-        this.length--;
-        if(this.length === 0){
-            this.head = null;
-            this.tail = null;
-        }
-        return current;
+        
+        previous.next = newNode;
+        newNode.next = current;
+        this.size++;
     }
     
-    shift(){
-        if(this.length === 0) return undefined;
-        const currentHead = this.head;
-        this.head = currentHead.next;
-        this.length--;
-        if(this.length === 0){
-            this.tail = null;
-        }
-        return currentHead;
-    }
     
 }
 
-const list = new SinglyLinkedList();
-list.push(1);
-list.push(2);
-list.push(3);
-list.push(4);
+let list = new SinglyLinkedList();
+list.append(10);
+list.append(20);
+list.append(50);
 
-list.shift();
+list.prepend(5);
+list.prepend(15);
 
-console.log(JSON.stringify(list, null, 2));
+list.insert(2, 25);
+list.insert(3, 30);
+
+console.log(JSON.stringify(list, null, 2)); 
